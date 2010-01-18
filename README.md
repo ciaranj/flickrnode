@@ -15,7 +15,7 @@ the FlickrAPI should be used for example:
     var flickr= new FlickrAPI(your_api_key_here);
    
     // Search for photos with a tag of 'badgers'
-    flickr.photos.search(undefined,'badgers' ).addErrback(fail).addCallback(function(results) {
+    flickr.photos.search(undefined,'badgers' ).addCallback(function(results) {
         sys.puts(sys.inspect(result));
     });
     
