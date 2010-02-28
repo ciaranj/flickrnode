@@ -15,23 +15,22 @@ the FlickrAPI should be used for example:
     var flickr= new FlickrAPI(your_api_key_here);
    
     // Search for photos with a tag of 'badgers'
-    flickr.photos.search(undefined,'badgers' ).addCallback(function(results) {
-        sys.puts(sys.inspect(result));
+    flickr.photos.search({tags:'badgers'},  function(error, results) {
+        sys.puts(sys.inspect(results));
     });
     
 
 ### Error handling
-As flickrnode uses the Promise API of node.js error handling is as simple as attaching a listener to the error event.  The errors
-thrown by the API are object literals consisting of a code and a message, the values of these properties is documented on flickr's API
-pages e.g.:
+As flickrnode uses the node.js idiom of accepting a final callback/handler function as the final argument of any asynchronous method, error handling is as simple as testing for the presence of the first argument when this callback is executed.  If present the first argument will be an object literals consisting of a code and a message, the values of these properties are documented on flickr's API pages e.g.:
     
     var FlickrAPI= require('flickr').FlickrAPI;
     var sys= require('sys');
     var flickr= new FlickrAPI(your_api_key_here, your_shared_secret_key);
 
     // Get hold of a 'frob' (requires the method to be signed, does not require authentication)
-    flickr.auth.getFrob().addErrback(fail).addCallback(function(frob) {
-        sys.puts("FROB: "+ sys.inspect(frob)); 
+    flickr.auth.getFrob(function(error, frob) {
+        if( error ) fail(error);
+        else sys.puts("FROB: "+ sys.inspect(frob)); 
     });
 
     // Simply print out the error
@@ -47,7 +46,7 @@ When executing methods that require signing (and for methods that require authen
     var flickr= new FlickrAPI(your_api_key_here, your_shared_secret_key);
 
     // Get hold of a 'frob' (requires the method to be signed, does not require authentication)
-    flickr.auth.getFrob().addCallback(function(frob) {
+    flickr.auth.getFrob(function(error, frob) {
         sys.puts("FROB: "+ sys.inspect(frob)); 
     });
 
@@ -60,7 +59,7 @@ for details of how to properly implement this please see: http://www.flickr.com/
     var sys= require('sys');
     var flickr= new FlickrAPI(your_api_key_here, your_shared_secret_key);
     
-    flickr.getLoginUrl("read").addCallback(function(url, frob) {
+    flickr.getLoginUrl("read", null, function(error, url, frob) {
         // Make a note of the frob and inform the user they need to visit the url passed in here. ......
     });
     
@@ -70,7 +69,7 @@ Please note this method consumes the passed frob and should only be called once 
     var sys= require('sys');
     var flickr= new FlickrAPI(your_api_key_here, your_shared_secret_key);
     
-    flickr.auth.getToken(frob).addCallback(function(res){
+    flickr.auth.getToken(frob, function(error, res){
         // Make a note res.token as this is what you will be using everywhere else.
     });
     
@@ -80,8 +79,8 @@ Please note this method consumes the passed frob and should only be called once 
     var flickr= new FlickrAPI(your_api_key_here, your_shared_secret_key, authentication_token);
 
     // This method requires authentication
-    flickr.blogs.getList().addCallback(function(foo) {
-        sys.puts(sys.inspect(foo));
+    flickr.blogs.getList(function(error, blogs) {
+        sys.puts(sys.inspect(blogs));
     });
 
 #### Setting the FlickrAPI up so that it is 'authenticated' (alternative approach)
@@ -91,6 +90,6 @@ Please note this method consumes the passed frob and should only be called once 
     flickr.setAuthenticationToken(authentication_token);
 
     // This method requires authentication
-    flickr.blogs.getList().addCallback(function(foo) {
+    flickr.blogs.getList(function(error, blogs) {
         sys.puts(sys.inspect(foo));
     });
