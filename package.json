@@ -1,0 +1,22 @@
+{
+  "author": "Ciaran Jessup <ciaranj@gmail.com> (ciaranj)",
+  "name": "flickrnode",
+  "description": "A lightweight API that leverages the asynchronous nature of node.js to interface with flickr.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/ciaranj/flickrnode",
+  "bugs": {
+    "url": "https://github.com/ciaranj/flickrnode/issues",
+    "email": "ciaranj@gmail.com"
+  },
+  "main": "flickr",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ciaranj/flickrnode.git"
+  },
+  "engines": {
+    "node": ">=0.1.30"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {}
+}
